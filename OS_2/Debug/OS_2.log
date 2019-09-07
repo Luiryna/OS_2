@@ -1,0 +1,3 @@
+﻿  OS_2.cpp
+  OS_2.vcxproj -> D:\laby\OS_2\Debug\OS_2.exe
+MSBUILD : warning C6800: Файл набора правил, указанный с помощью параметра /analyze:ruleset, не удалось проанализировать. Он будет пропущен.

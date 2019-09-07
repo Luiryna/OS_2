@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH></FILEPATH>
+      <FILENAME></FILENAME>
+      <LINE>0</LINE>
+      <COLUMN>0</COLUMN>
+    </SFA>
+    <DEFECTCODE>6800</DEFECTCODE>
+    <DESCRIPTION>Файл набора правил, указанный с помощью параметра /analyze:ruleset, не удалось проанализировать. Он будет пропущен.</DESCRIPTION>
+    <FUNCTION></FUNCTION>
+    <DECORATED></DECORATED>
+    <FUNCLINE>0</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\laby\OS_2\OS_2\</FILEPATH>
+      <FILENAME>OS_2.cpp</FILENAME>
+      <LINE>10</LINE>
+      <COLUMN>4</COLUMN>
+    </SFA>
+    <DEFECTCODE>26462</DEFECTCODE>
+    <DESCRIPTION>Значение, на которое указывает "j", назначается только один раз. Пометьте его как указатель на const (con.4).</DESCRIPTION>
+    <FUNCTION>main</FUNCTION>
+    <DECORATED>main</DECORATED>
+    <FUNCLINE>6</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\laby\OS_2\OS_2\</FILEPATH>
+      <FILENAME>OS_2.cpp</FILENAME>
+      <LINE>10</LINE>
+      <COLUMN>4</COLUMN>
+    </SFA>
+    <DEFECTCODE>26429</DEFECTCODE>
+    <DESCRIPTION>Символ "j" никогда не проверяется на равенство null, он может быть помечен как not_null (f.23).</DESCRIPTION>
+    <FUNCTION>main</FUNCTION>
+    <DECORATED>main</DECORATED>
+    <FUNCLINE>6</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>
