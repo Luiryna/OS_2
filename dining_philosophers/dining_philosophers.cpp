@@ -1,91 +1,142 @@
-﻿// crt_BEGTHRD.C
-// compile with: /MT /D "_X86_" /c
-// processor: x86
-#include <windows.h>
-#include <process.h>    /* _beginthread, _endthread */
-#include <stddef.h>
-#include <stdlib.h>
-#include <conio.h>
+﻿#include <array>
+#include <mutex>
+#include <thread>
+#include <atomic>
+#include <chrono>
 #include <iostream>
+#include <string>
+#include <random>
+#include <iomanip>
+#include <string_view>
+#include <windows.h>
 
 using namespace std;
 
-void Eat(void*);
-void CheckKey(void*);
-void Think(void*);
-void exist();
+mutex g_lockprint;
+const int no_of_philosophers = 5;
 
-// GetRandom returns a random integer between min and max.
-#define GetRandom( min, max ) ((rand() % (int)(((max) + 1) - (min))) + (min))
-// GetGlyph returns a printable ASCII character value
-#define GetGlyph( val ) ((char)((val + 32) % 93 + 33))
-
-BOOL repeat = TRUE;                 // Global repeat flag
-HANDLE hStdOut;                     // Handle for console window
-CONSOLE_SCREEN_BUFFER_INFO csbi;    // Console information structure
-
-struct Philosopher {
-	bool leftFork;
-	bool rightFork;
-	string name;
+struct fork
+{
+public:
+	void wait() {
+		WaitForSingleObject(mutex, INFINITE);
+	}
+	void release() {
+		ReleaseMutex(mutex);
+	}
+private:
+	HANDLE mutex = CreateMutex(NULL, FALSE, NULL);
 };
+
+struct table
+{
+public:
+	bool ready = false;
+	array<fork, 5> forks;
+
+private:
+
+};
+
+unsigned __stdcall callThread(void* pArguments);
+
+
+struct philosopher
+{
+private:
+	string const name;
+	table const& dinnertable;
+	fork& left_fork;
+	fork& right_fork;
+	HANDLE lifeThread;
+
+public:
+
+
+
+	philosopher(string_view n, table const& t, fork& l, fork& r) :
+		name(n), dinnertable(t), left_fork(l), right_fork(r)
+	{
+		unsigned threadID;
+		lifeThread = (HANDLE)_beginthreadex(NULL, 0, &callThread, (void*)this, 0, &threadID);
+	}
+
+	
+	~philosopher() {
+	}
+
+	void dine()
+	{
+		while (!dinnertable.ready);
+
+		do
+		{
+			think();
+			eat();
+		} while (dinnertable.ready);
+	}
+
+	void print(string_view text)
+	{
+		lock_guard<std::mutex> cout_lock(g_lockprint);
+		cout
+			<< left << setw(10) << setfill(' ')
+			<< name << text << endl;
+	}
+
+	void eat()
+	{
+		
+
+		print(" started eating.");
+		print(" finished eating.");
+	}
+
+	void think()
+	{
+		
+
+		print(" is thinking ");
+	}
+};
+unsigned __stdcall callThread(void* pArguments)
+{
+	philosopher* ph = (philosopher*)(pArguments);
+	if (ph) {
+		ph->dine();
+	}
+	_endthreadex(0);
+
+
+	return 0;
+}
+void dine()
+{
+	//thread sleep
+	cout << "Dinner started!" << endl;
+
+	{
+		table table;
+		array<philosopher, no_of_philosophers> philosophers
+		{
+		   {
+			  { "Aristotle", table, table.forks[0], table.forks[1] },
+			  { "Platon",    table, table.forks[1], table.forks[2] },
+			  { "Descartes", table, table.forks[2], table.forks[3] },
+			  { "Kant",      table, table.forks[3], table.forks[4] },
+			  { "Nietzsche", table, table.forks[4], table.forks[0] },
+		   }
+		};
+
+		
+	}
+
+	cout << "Dinner done!" << endl;
+}
 
 int main()
 {
-	int param = 0;
-	int* pparam = &param;
+	dine();
 
-	// Launch CheckKey thread to check for terminating keystroke.
-	_beginthread(CheckKey, 0, NULL);
-
-	// Loop until CheckKey terminates program or 1000 threads created.
-	while (repeat && param < 5)
-	{
-		// launch another character thread.
-		_beginthread(Eat, 0, (void*)pparam);
-
-		// increment the thread parameter
-		param++;
-
-		// Wait one second between loops.
-		Sleep(1000L);
-	}
-}
-
-// CheckKey - Thread to wait for a keystroke, then clear repeat flag.
-void CheckKey(void* ignored)
-{
-	_getch();
-	repeat = 0;    // _endthread implied
-}
-
-// Bounce - Thread to create and control a colored letter that moves
-// around on the screen.
-//
-// Params: parg - the value to create the character from
-void Eat(void* parg)
-{
-	cout << "I'm eating" << endl;
-	// _endthread given to terminate
-	_endthread();
-}
-
-void Think(void* parg)
-{
-	while (repeat)
-	{
-		cout << "I'm thinking";
-	}
-	// _endthread given to terminate
-	_endthread();
-}
-
-void exist(Philosopher &philosopher) {
-	
-
-	while (repeat) {
-		cout << philosopher.name << endl;
-	}
-
-	_endthread();
+	return 0;
 }
