@@ -53,7 +53,7 @@ public:
 
 
 
-	philosopher(string n, table const& t, fork& l, fork& r) :
+	philosopher(string_view n, table const& t, fork& l, fork& r) :
 		name(n), dinnertable(t), left_fork(l), right_fork(r)
 	{
 		unsigned threadID;
@@ -74,7 +74,7 @@ public:
 			eat();
 		} while (dinnertable.ready);*/
 	
-		think();
+		//think();
 		eat();
 		
 	
@@ -83,8 +83,7 @@ public:
 	void print(string_view text)
 	{
 		//lock_guard<std::mutex> cout_lock(g_lockprint);
-		cout
-			<< left << setw(10) << " "
+		cout << " "
 			<< name << text << endl;
 	}
 
@@ -94,8 +93,7 @@ public:
 
 		print(" started eating.");
 
-		left_fork.wait();
-		right_fork.wait();
+		
 
 		/*cout << "started eating" << endl;*/
 		// sleep
@@ -103,14 +101,21 @@ public:
 
 		left_fork.release();
 		right_fork.release();
-		print(" finished eating.");
+		print(" finished eating."); 
+		think();
 
 		//cout << "finished eating" << endl;
 	}
 
 	void think()
 	{
-		
+
+		left_fork.wait();
+		right_fork.wait();
+		if (WAIT_OBJECT_0) {
+			eat();
+		}
+
 
 		print(" is thinking ");
 
@@ -135,7 +140,7 @@ void dine()
 
 	{
 		table table;
-		/*array<philosopher, no_of_philosophers> philosophers
+		array<philosopher, no_of_philosophers> philosophers
 		{
 		   {
 			  { "Aristotle", table, table.forks[0], table.forks[1] },
@@ -144,13 +149,9 @@ void dine()
 			  { "Kant",      table, table.forks[3], table.forks[4] },
 			  { "Nietzsche", table, table.forks[4], table.forks[0] },
 		   }
-		};*/
+		};
 
-		philosopher aristotle("Aristotle", table, table.forks[0], table.forks[1]);
-		philosopher platon("Platon", table, table.forks[1], table.forks[2]);
-		philosopher descartes("Descartes", table, table.forks[2], table.forks[3]);
-		philosopher kant("Kant", table, table.forks[3], table.forks[4]);
-		philosopher nietzsche("Nietzsche", table, table.forks[4], table.forks[0]);
+		
 
 
 
