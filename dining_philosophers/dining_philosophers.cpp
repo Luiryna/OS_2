@@ -1,4 +1,4 @@
-﻿#include <array>
+#include <array>
 #include <mutex>
 #include <thread>
 #include <atomic>
@@ -66,17 +66,18 @@ public:
 
 	void dine()
 	{
-		/*while (!dinnertable.ready);
+		while (!dinnertable.ready) {
+			while (dinnertable.ready)
+			{
+				think();
 
-		do
-		{
-			think();
-			eat();
-		} while (dinnertable.ready);*/
+				eat();
+			}
+		}
 	
 		//think();
-		eat();
-		
+		/*eat();
+		think();*/
 	
 	}
 
@@ -85,6 +86,7 @@ public:
 		//lock_guard<std::mutex> cout_lock(g_lockprint);
 		cout << " "
 			<< name << text << endl;
+		printf("%s", name);
 	}
 
 	void eat()
@@ -102,7 +104,6 @@ public:
 		left_fork.release();
 		right_fork.release();
 		print(" finished eating."); 
-		think();
 
 		//cout << "finished eating" << endl;
 	}
@@ -112,13 +113,9 @@ public:
 
 		left_fork.wait();
 		right_fork.wait();
-		if (WAIT_OBJECT_0) {
-			eat();
-		}
-
+		Sleep(1000);
 
 		print(" is thinking ");
-
 		//cout << "is thinking" << endl;
 	}
 };
@@ -138,26 +135,21 @@ void dine()
 	//thread sleep
 	cout << "Dinner started!" << endl;
 
+	table table;
+	array<philosopher, no_of_philosophers> philosophers
 	{
-		table table;
-		array<philosopher, no_of_philosophers> philosophers
 		{
-		   {
-			  { "Aristotle", table, table.forks[0], table.forks[1] },
-			  { "Platon",    table, table.forks[1], table.forks[2] },
-			  { "Descartes", table, table.forks[2], table.forks[3] },
-			  { "Kant",      table, table.forks[3], table.forks[4] },
-			  { "Nietzsche", table, table.forks[4], table.forks[0] },
-		   }
-		};
+			{ "Aristotle", table, table.forks[0], table.forks[1] },
+			{ "Platon",    table, table.forks[1], table.forks[2] },
+			{ "Descartes", table, table.forks[2], table.forks[3] },
+			{ "Kant",      table, table.forks[3], table.forks[4] },
+			{ "Nietzsche", table, table.forks[4], table.forks[0] },
+		}
+	};
 
+	table.ready = true;
 		
-
-
-
-		
-	}
-	Sleep(10000);
+	Sleep(1000000);
 
 	cout << "Dinner done!" << endl;
 }
