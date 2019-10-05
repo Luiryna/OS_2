@@ -66,14 +66,14 @@ public:
 
 	void dine()
 	{
-		while (!dinnertable.ready) {
+		//while (!dinnertable.ready) {
 			while (dinnertable.ready)
 			{
 				think();
 
 				eat();
 			}
-		}
+		//}
 	
 		//think();
 		/*eat();
@@ -86,7 +86,7 @@ public:
 		//lock_guard<std::mutex> cout_lock(g_lockprint);
 		cout << " "
 			<< name << text << endl;
-		printf("%s", name);
+		
 	}
 
 	void eat()
@@ -149,7 +149,7 @@ void dine()
 
 	table.ready = true;
 		
-	Sleep(1000000);
+	Sleep(100000);
 
 	cout << "Dinner done!" << endl;
 }
