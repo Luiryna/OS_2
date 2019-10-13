@@ -10,118 +10,23 @@
 #include <string_view>
 #include <windows.h>
 
+#include "philosopher.h"
+#include "fork.h"
+#include "table.h"
+
 using namespace std;
 
 const int no_of_philosophers = 5;
 
-struct fork
-{
-public:
-	void wait() {
-		WaitForSingleObject(mutex, INFINITE);
-	}
-	void release() {
-		ReleaseMutex(mutex);
-	}
-private:
-	HANDLE mutex = CreateMutex(NULL, FALSE, NULL);
-};
-
-struct table
-{
-public:
-	bool ready = false;
-	array<fork, 5> forks;
-
-private:
-
-};
-
-unsigned __stdcall callThread(void* pArguments);
-
-
-struct philosopher
-{
-private:
-	string const name;
-	table const& dinnertable;
-	fork& left_fork;
-	fork& right_fork;
-	HANDLE lifeThread;
-
-public:
-
-
-
-	philosopher(string_view n, table const& t, fork& l, fork& r) :
-		name(n), dinnertable(t), left_fork(l), right_fork(r)
-	{
-		unsigned threadID;
-		lifeThread = (HANDLE)_beginthreadex(NULL, 0, &callThread, (void*)this, 0, &threadID);
-	}
-
-	
-	~philosopher() {
-	}
-
-	void dine()
-	{
-			while (dinnertable.ready)
-			{
-				think();
-
-				eat();
-			}
-	
-	}
-
-	void print(string_view text)
-	{
-		cout << " "
-			<< name << text << endl;
-		
-	}
-
-	void eat()
-	{
-
-		print(" started eating.");
-
-		Sleep(1000);
-
-		left_fork.release();
-		right_fork.release();
-		print(" finished eating."); 
-	}
-
-	void think()
-	{
-
-		left_fork.wait();
-		right_fork.wait();
-		Sleep(1000);
-
-		print(" is thinking ");
-	
-	}
-};
-unsigned __stdcall callThread(void* pArguments)
-{
-	philosopher* ph = (philosopher*)(pArguments);
-	if (ph) {
-		ph->dine();
-	}
-	_endthreadex(0);
-
-
-	return 0;
-}
 void dine()
 {
+
+	cout << "Press F to pay respects" << endl;
+
 	cout << "Dinner started!" << endl;
 
-	table table;
-	array<philosopher, no_of_philosophers> philosophers
+	Table table;
+	array<Philosopher, no_of_philosophers> philosophers
 	{
 		{
 			{ "Aristotle", table, table.forks[0], table.forks[1] },
