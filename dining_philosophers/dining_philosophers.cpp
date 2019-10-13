@@ -66,24 +66,17 @@ public:
 
 	void dine()
 	{
-		//while (!dinnertable.ready) {
 			while (dinnertable.ready)
 			{
 				think();
 
 				eat();
 			}
-		//}
-	
-		//think();
-		/*eat();
-		think();*/
 	
 	}
 
 	void print(string_view text)
 	{
-		//lock_guard<std::mutex> cout_lock(g_lockprint);
 		cout << " "
 			<< name << text << endl;
 		
@@ -91,21 +84,14 @@ public:
 
 	void eat()
 	{
-		
 
 		print(" started eating.");
 
-		
-
-		/*cout << "started eating" << endl;*/
-		// sleep
 		Sleep(1000);
 
 		left_fork.release();
 		right_fork.release();
 		print(" finished eating."); 
-
-		//cout << "finished eating" << endl;
 	}
 
 	void think()
@@ -116,7 +102,7 @@ public:
 		Sleep(1000);
 
 		print(" is thinking ");
-		//cout << "is thinking" << endl;
+	
 	}
 };
 unsigned __stdcall callThread(void* pArguments)
@@ -132,7 +118,6 @@ unsigned __stdcall callThread(void* pArguments)
 }
 void dine()
 {
-	//thread sleep
 	cout << "Dinner started!" << endl;
 
 	table table;
