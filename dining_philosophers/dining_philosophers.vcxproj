@@ -93,7 +93,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
-    <Link> 
+    <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
@@ -154,6 +154,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dining_philosophers.cpp" />
+    <ClCompile Include="fork.cpp" />
+    <ClCompile Include="philosopher.cpp" />
+    <ClCompile Include="table.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="fork.h" />
+    <ClInclude Include="philosopher.h" />
+    <ClInclude Include="table.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

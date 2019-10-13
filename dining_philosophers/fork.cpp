@@ -9,11 +9,12 @@
 #include <iomanip>
 #include <string_view>
 #include <windows.h>
+#include "fork.h"
 
-Fork::wait() {
+void Fork::wait() {
 	WaitForSingleObject(mutex, INFINITE);
 }
 
-Fork::release() {
+void Fork::release() {
 	ReleaseMutex(mutex);
 }

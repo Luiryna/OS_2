@@ -11,6 +11,9 @@
 #include <iomanip>
 #include <string_view>
 #include <windows.h>
+#include "fork.h"
+
+using namespace std;
 
 class Table
 {

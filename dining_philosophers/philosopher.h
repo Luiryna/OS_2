@@ -11,20 +11,21 @@
 #include <iomanip>
 #include <string_view>
 #include <windows.h>
+#include "fork.h"
+#include "table.h"
 
 using namespace std;
 
 class Philosopher
 {
 public:
-	Philosopher(string_view n, Table const& t, Fork& l, Fork& r) :
-		name(n), dinnertable(t), left_fork(l), right_fork(r);
+	Philosopher(string_view n, Table const& t, Fork& l, Fork& r);
 	~Philosopher();
 	void dine();
 	void print(string_view text);
 	void eat();
 	void think();
-	unsigned __stdcall callThread(void* pArguments);
+	static unsigned __stdcall callThread(void* pArguments);
 
 
 private:

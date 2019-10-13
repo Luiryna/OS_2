@@ -9,6 +9,7 @@
 #include <iomanip>
 #include <string_view>
 #include <windows.h>
+#include "table.h"
 
 Table::Table() {
 }

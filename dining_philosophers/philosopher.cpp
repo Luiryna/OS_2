@@ -20,14 +20,13 @@ using namespace std;
 Philosopher::Philosopher(string_view n, Table const& t, Fork& l, Fork& r) :
 	name(n), dinnertable(t), left_fork(l), right_fork(r)
 {
-	unsigned threadID;
-	lifeThread = (HANDLE)_beginthreadex(NULL, 0, &callThread, (void*)this, 0, &threadID);
+	lifeThread = (HANDLE)_beginthreadex(NULL, 0, &callThread, this, 0, NULL);
 }
 
 Philosopher::~Philosopher() {
 }
 
-unsigned __stdcall Philosopher::callThread(void* pArguments) {
+unsigned __stdcall Philosopher::callThread(void *pArguments) {
 	Philosopher* ph = (Philosopher*)(pArguments);
 	if (ph) {
 		ph->dine();
@@ -38,7 +37,7 @@ unsigned __stdcall Philosopher::callThread(void* pArguments) {
 	return 0;
 }
 
-Philosopher::dine() {
+void Philosopher::dine() {
 	while (dinnertable.ready)
 	{
 		think();
@@ -47,12 +46,12 @@ Philosopher::dine() {
 	}
 }
 
-Philosopher::print(string_view text) {
+void Philosopher::print(string_view text) {
 	cout << " "
 		<< name << text << endl;
 }
 
-Philosopher::eat() {
+void Philosopher::eat() {
 	print(" started eating.");
 
 	Sleep(1000);
@@ -62,7 +61,7 @@ Philosopher::eat() {
 	print(" finished eating.");
 }
 
-Philosopher::think() {
+void Philosopher::think() {
 	left_fork.wait();
 	right_fork.wait();
 	Sleep(1000);
