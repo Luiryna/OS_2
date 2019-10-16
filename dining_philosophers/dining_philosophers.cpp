@@ -33,7 +33,7 @@ void dine()
 	table.ready = true;
 
 	Sleep(100000);
-
+	table.printStates();
 	cout << "Dinner done!" << endl;
 }
 

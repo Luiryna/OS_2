@@ -6,6 +6,7 @@
 class Fork
 {
 public:
+
 	void wait();
 	void release();
 

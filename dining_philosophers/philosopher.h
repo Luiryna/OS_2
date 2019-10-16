@@ -11,7 +11,7 @@ using namespace std;
 class Philosopher
 {
 public:
-	Philosopher(string_view n, Table const& t, Fork& l, Fork& r);
+	Philosopher(string_view n, Table& t, Fork& l, Fork& r);
 	~Philosopher();
 	void dine();
 	void print(string_view text);
@@ -22,7 +22,7 @@ public:
 
 private:
 	string const name;
-	Table const& dinnertable;
+	Table& dinnertable;
 	Fork& left_fork;
 	Fork& right_fork;
 	HANDLE lifeThread;
