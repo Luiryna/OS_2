@@ -10,11 +10,9 @@ Table::Table() {
 unsigned __stdcall Table::callThread(void* pArguments) {
 	Table* table = (Table*)(pArguments);
 	if (table) {
-		//ph->dine();
 		table->checkStateAndPrint();
 	}
 	_endthreadex(0);
-
 
 	return 0;
 }
@@ -29,14 +27,6 @@ void Table::pushState(string name, string state) {
 	ReleaseMutex(mutex);
 }
 
-//void Table::printStates() {
-//	for (vector<string> nameAndState : arrayOfStates) {
-//		if (nameAndState.size() == 2) {
-//			std::cout << nameAndState.at(0) << nameAndState.at(1) << '\n';
-//		}
-//	}
-//}
-
 void Table::popState() {
 	WaitForSingleObject(mutex, INFINITE);
 	if (arrayOfStates.size() > 0) {
@@ -50,7 +40,7 @@ void Table::popState() {
 }
 
 void Table::checkStateAndPrint() {
-	while (true) {
+	while (ready) {
 		popState();
 	}
 }

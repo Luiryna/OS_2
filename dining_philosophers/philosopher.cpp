@@ -28,7 +28,6 @@ unsigned __stdcall Philosopher::callThread(void *pArguments) {
 	}
 	_endthreadex(0);
 
-
 	return 0;
 }
 
@@ -47,21 +46,20 @@ void Philosopher::print(string_view text) {
 }
 
 void Philosopher::eat() {
-	//print(" started eating.");
 	dinnertable.pushState(name, " started eating.");
 	Sleep(1000);
 
-	//print(" finished eating.");
 	dinnertable.pushState(name, " finished eating.");
 	left_fork.release();
 	right_fork.release();
 }
 
 void Philosopher::think() {
+	dinnertable.pushState(name, " started thinking.");
+	Sleep(1000);
+
 	left_fork.wait();
 	right_fork.wait();
 
-	//print(" is thinking ");
-	dinnertable.pushState(name, " started thinking.");
-	Sleep(1000);
+	
 }
