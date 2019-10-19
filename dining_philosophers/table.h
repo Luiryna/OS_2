@@ -9,11 +9,13 @@
 
 using namespace std;
 
+const int numberOfForks = 5;
+
 class Table
 {
 public:
 	bool ready = false;
-	array<Fork, 5> forks;
+	array<Fork, numberOfForks> forks;
 	vector<vector<string>> arrayOfStates;
 	void pushState(string name, string state);
 	void printStates();
