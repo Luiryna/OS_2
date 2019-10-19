@@ -18,7 +18,8 @@ public:
 	array<Fork, numberOfForks> forks;
 	vector<vector<string>> arrayOfStates;
 	void pushState(string name, string state);
-	void printStates();
+	//void printStates();
+	void checkStateAndPrint();
 	void popState();
 	static unsigned __stdcall callThread(void* pArguments);
 	HANDLE mutex;
