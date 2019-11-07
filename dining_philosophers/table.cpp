@@ -1,10 +1,33 @@
-#include <iostream>
+
 #include "table.h"
+#include "fork.h"
+#include "philosopher.h"
+
+#include <iostream>
+#include <iomanip>
 #include <thread>
+#include <array>
+
+using namespace std;
 
 Table::Table() {
+
 	mutex = CreateMutex(NULL, FALSE, NULL);
 	thread = (HANDLE)_beginthreadex(NULL, 0, &callThread, this, 0, NULL);
+	headerPrinted = false;
+
+	vector<string> names{ "Aristotle", "Platon", "Descartes", "Kant", "Nietzsche" };
+
+	for (int i = 0; i < numberOfForks; i++) {
+		int rightFork;
+		if (i == numberOfForks - 1) {
+			rightFork = 0;
+		} else {
+			rightFork = i + 1;
+		}
+		Philosopher* philosopher = new Philosopher(names.at(i), forks[i], forks[rightFork]);
+		philosophers.push_back(philosopher);
+	}
 }
 
 unsigned __stdcall Table::callThread(void* pArguments) {
@@ -20,27 +43,30 @@ unsigned __stdcall Table::callThread(void* pArguments) {
 Table::~Table() {
 }
 
-void Table::pushState(string name, string state) {
+void Table::printState() {
 	WaitForSingleObject(mutex, INFINITE);
-	vector<string> nameAndState = {name, state};
-	arrayOfStates.push_back(nameAndState);
-	ReleaseMutex(mutex);
-}
-
-void Table::popState() {
-	WaitForSingleObject(mutex, INFINITE);
-	if (arrayOfStates.size() > 0) {
-		vector<string> nameAndState = arrayOfStates.at(0);
-		if (nameAndState.size() == 2) {
-			cout << nameAndState.at(0) << nameAndState.at(1) << "\n";
-		}
-		arrayOfStates.erase(arrayOfStates.begin());
+	
+	for (Philosopher* philosopher : philosophers) {
+		cout << setw(15) << philosopher->state;
 	}
+
+	cout << endl;
+
 	ReleaseMutex(mutex);
 }
 
 void Table::checkStateAndPrint() {
 	while (ready) {
-		popState();
+		if (headerPrinted == false) { printHeader(); }
+		printState();
+		Sleep(1000);
 	}
+}
+
+void Table::printHeader() {
+	for (Philosopher* philosopher : philosophers) {
+		cout << setw(15) << philosopher->name;
+	}
+	cout << endl;
+	headerPrinted = true;
 }

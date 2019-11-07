@@ -1,25 +1,28 @@
 #pragma once
 
+//#include "philosopher.h"
+#include "fork.h"
+
 #include <array>
 #include <iostream>
 #include <windows.h>
-#include "fork.h"
 #include <string>
 #include <vector>
 
-using namespace std;
+#define numberOfForks 5
 
-const int numberOfForks = 5;
+class Philosopher;
 
 class Table
 {
 public:
 	bool ready = false;
-	array<Fork, numberOfForks> forks;
-	vector<vector<string>> arrayOfStates;
-	void pushState(string name, string state);
+	bool headerPrinted;
+	std::array<Fork, numberOfForks> forks;
+	std::vector<Philosopher*> philosophers;
+	void printHeader();
 	void checkStateAndPrint();
-	void popState();
+	void printState();
 	static unsigned __stdcall callThread(void* pArguments);
 	HANDLE mutex;
 	HANDLE thread;
