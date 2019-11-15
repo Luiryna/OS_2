@@ -21,11 +21,12 @@ public:
 	void setState(string stringState);
 	static unsigned __stdcall callThread(void* pArguments);
 	string const name;
+	void stopDining();
+	HANDLE stopEating;
 
 private:
 	Fork& left_fork;
 	Fork& right_fork;
 	HANDLE lifeThread;
-
 };
 

@@ -23,9 +23,11 @@ public:
 	void printHeader();
 	void checkStateAndPrint();
 	void printState();
+	void stopDining();
 	static unsigned __stdcall callThread(void* pArguments);
 	HANDLE mutex;
 	HANDLE thread;
+	HANDLE stop;
 	Table();
 	~Table();
 

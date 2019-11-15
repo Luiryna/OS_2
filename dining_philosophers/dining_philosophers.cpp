@@ -19,10 +19,9 @@ void dine()
 	cout << "Dinner started!" << endl;
 
 	Table table;
-	table.ready = true;
-
-
 	Sleep(100000);
+	table.stopDining();
+	// сделать какое-то событие
 	cout << "Dinner done!" << endl;
 }
 

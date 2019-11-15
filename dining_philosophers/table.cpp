@@ -15,6 +15,7 @@ Table::Table() {
 	mutex = CreateMutex(NULL, FALSE, NULL);
 	thread = (HANDLE)_beginthreadex(NULL, 0, &callThread, this, 0, NULL);
 	headerPrinted = false;
+	stop = CreateEvent(NULL, TRUE, FALSE, NULL);
 
 	vector<string> names{ "Aristotle", "Platon", "Descartes", "Kant", "Nietzsche" };
 
@@ -28,6 +29,7 @@ Table::Table() {
 		Philosopher* philosopher = new Philosopher(names.at(i), forks[i], forks[rightFork]);
 		philosophers.push_back(philosopher);
 	}
+	ready = true;
 }
 
 unsigned __stdcall Table::callThread(void* pArguments) {
@@ -56,10 +58,13 @@ void Table::printState() {
 }
 
 void Table::checkStateAndPrint() {
-	while (ready) {
+	while (ready && WaitForSingleObject(stop, 0) != WAIT_OBJECT_0) {
 		if (headerPrinted == false) { printHeader(); }
 		printState();
 		Sleep(1000);
+	}
+	for (Philosopher* philosopher : philosophers) {
+		philosopher->stopDining();
 	}
 }
 
@@ -69,4 +74,8 @@ void Table::printHeader() {
 	}
 	cout << endl;
 	headerPrinted = true;
+}
+
+void Table::stopDining() {
+	SetEvent(stop);
 }

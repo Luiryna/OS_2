@@ -16,6 +16,7 @@ Philosopher::Philosopher(string_view n, Fork& l, Fork& r) :
 {
 	lifeThread = (HANDLE)_beginthreadex(NULL, 0, &callThread, this, 0, NULL);
 	state = "start";
+	stopEating = CreateEvent(NULL, TRUE, FALSE, NULL);
 }
 
 Philosopher::~Philosopher() {
@@ -36,7 +37,7 @@ void Philosopher::setState(string stringState) {
 }
 
 void Philosopher::dine() {
-	while (true)
+	while (WaitForSingleObject(stopEating, 0) != WAIT_OBJECT_0)
 	{
 		think();
 		eat();
@@ -57,4 +58,8 @@ void Philosopher::think() {
 
 	left_fork.wait();
 	right_fork.wait();
+}
+
+void Philosopher::stopDining() {
+	SetEvent(stopEating);
 }
