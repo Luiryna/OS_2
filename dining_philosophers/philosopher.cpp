@@ -11,12 +11,11 @@
 
 using namespace std;
 
-Philosopher::Philosopher(string_view n, Fork& l, Fork& r) :
-	name(n), left_fork(l), right_fork(r)
+Philosopher::Philosopher(string_view n, Fork& l, Fork& r, HANDLE stop) :
+	name(n), left_fork(l), right_fork(r), stopEating(stop)
 {
 	lifeThread = (HANDLE)_beginthreadex(NULL, 0, &callThread, this, 0, NULL);
 	state = "start";
-	stopEating = CreateEvent(NULL, TRUE, FALSE, NULL);
 }
 
 Philosopher::~Philosopher() {

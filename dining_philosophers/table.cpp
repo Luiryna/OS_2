@@ -15,7 +15,7 @@ Table::Table() {
 	mutex = CreateMutex(NULL, FALSE, NULL);
 	thread = (HANDLE)_beginthreadex(NULL, 0, &callThread, this, 0, NULL);
 	headerPrinted = false;
-	stop = CreateEvent(NULL, TRUE, FALSE, NULL);
+	stop = CreateEvent(NULL, TRUE, FALSE, L"stopDiningEvent");
 
 	vector<string> names{ "Aristotle", "Platon", "Descartes", "Kant", "Nietzsche" };
 
@@ -26,7 +26,7 @@ Table::Table() {
 		} else {
 			rightFork = i + 1;
 		}
-		Philosopher* philosopher = new Philosopher(names.at(i), forks[i], forks[rightFork]);
+		Philosopher* philosopher = new Philosopher(names.at(i), forks[i], forks[rightFork], stop);
 		philosophers.push_back(philosopher);
 	}
 	ready = true;
@@ -62,9 +62,6 @@ void Table::checkStateAndPrint() {
 		if (headerPrinted == false) { printHeader(); }
 		printState();
 		Sleep(1000);
-	}
-	for (Philosopher* philosopher : philosophers) {
-		philosopher->stopDining();
 	}
 }
 

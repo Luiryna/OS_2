@@ -12,7 +12,7 @@ using namespace std;
 class Philosopher
 {
 public:
-	Philosopher(string_view n, Fork& l, Fork& r);
+	Philosopher(string_view n, Fork& l, Fork& r, HANDLE stop);
 	~Philosopher();
 	void dine();
 	void eat();
